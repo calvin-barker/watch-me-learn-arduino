@@ -29,11 +29,72 @@ elegoo_tutorial/
 
 ## Getting Started
 
-1. Clone this repository
-2. Open any `.ino` file in the Arduino IDE
-3. Connect your Arduino board
-4. Select the appropriate board and port in the IDE
-5. Upload the sketch and observe the results
+### Using Arduino CLI (Recommended)
+
+1. **Install Arduino CLI** (macOS with Homebrew):
+   ```bash
+   brew install arduino-cli
+   ```
+
+2. **Initialize configuration**:
+   ```bash
+   # Create default configuration file
+   arduino-cli config init
+   ```
+
+3. **Update package index**:
+   ```bash
+   # Download latest package index for boards
+   arduino-cli core update-index
+   ```
+
+4. **Install Arduino AVR core**:
+   ```bash
+   # Install support for Arduino Uno and similar boards
+   arduino-cli core install arduino:avr
+   ```
+
+5. **Verify installation**:
+   ```bash
+   # List installed cores
+   arduino-cli core list
+
+   # Detect connected boards
+   arduino-cli board list
+   ```
+
+6. **Compile a sketch**:
+   ```bash
+   # Compile for Arduino Uno
+   arduino-cli compile --fqbn arduino:avr:uno elegoo_tutorial/lesson_2/blink_sos
+   ```
+
+7. **Upload to board**:
+   ```bash
+   # Replace /dev/cu.usbmodem2101 with your board's port from step 5
+   arduino-cli upload -p /dev/cu.usbmodem2101 --fqbn arduino:avr:uno elegoo_tutorial/lesson_2/blink_sos
+   ```
+
+8. **Monitor serial output** (optional):
+   ```bash
+   # View serial output at 9600 baud
+   arduino-cli monitor -p /dev/cu.usbmodem2101 -c baudrate=9600
+   ```
+
+### Using Justfile shortcuts
+
+This repository includes a `justfile` for common commands. Install [just](https://github.com/casey/just) and run from any sketch directory:
+
+```bash
+# Compile current directory sketch
+just compile
+
+# Upload to board (edit PORT in justfile first)
+just upload
+
+# Monitor serial output
+just monitor
+```
 
 ## Projects
 
