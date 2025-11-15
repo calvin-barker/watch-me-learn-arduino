@@ -82,7 +82,7 @@ elegoo_tutorial/
    arduino-cli upload -p /dev/cu.usbmodem2101 --fqbn arduino:avr:uno elegoo_tutorial/lesson_2/blink_sos
    ```
 
-8. **Monitor serial output** (optional):
+8. Monitor serial output:
 
    ```bash
    # View serial output at 9600 baud
