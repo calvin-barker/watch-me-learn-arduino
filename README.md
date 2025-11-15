@@ -11,7 +11,7 @@ working through tutorials and creating remixes of example code.
 
 ## Hardware
 
-- Arduino board (based on project files)
+- Arduino board (<https://www.amazon.com/dp/B01D8KOZF4>)
 - Various LEDs and components from the Elegoo tutorial kit
 
 ## Project Structure
@@ -32,29 +32,34 @@ elegoo_tutorial/
 ### Using Arduino CLI (Recommended)
 
 1. **Install Arduino CLI** (macOS with Homebrew):
+
    ```bash
    brew install arduino-cli
    ```
 
 2. **Initialize configuration**:
+
    ```bash
    # Create default configuration file
    arduino-cli config init
    ```
 
 3. **Update package index**:
+
    ```bash
    # Download latest package index for boards
    arduino-cli core update-index
    ```
 
 4. **Install Arduino AVR core**:
+
    ```bash
    # Install support for Arduino Uno and similar boards
    arduino-cli core install arduino:avr
    ```
 
 5. **Verify installation**:
+
    ```bash
    # List installed cores
    arduino-cli core list
@@ -64,18 +69,21 @@ elegoo_tutorial/
    ```
 
 6. **Compile a sketch**:
+
    ```bash
    # Compile for Arduino Uno
    arduino-cli compile --fqbn arduino:avr:uno elegoo_tutorial/lesson_2/blink_sos
    ```
 
 7. **Upload to board**:
+
    ```bash
    # Replace /dev/cu.usbmodem2101 with your board's port from step 5
    arduino-cli upload -p /dev/cu.usbmodem2101 --fqbn arduino:avr:uno elegoo_tutorial/lesson_2/blink_sos
    ```
 
 8. **Monitor serial output** (optional):
+
    ```bash
    # View serial output at 9600 baud
    arduino-cli monitor -p /dev/cu.usbmodem2101 -c baudrate=9600
