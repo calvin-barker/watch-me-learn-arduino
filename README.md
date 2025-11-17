@@ -23,8 +23,10 @@ elegoo_tutorial/
 ├── lesson_4/
 │   ├── sine_led/           # LED brightness control using sine wave
 │   └── pendulum_led/       # Pendulum-inspired LED animation
-└── lesson_5/
-    └── dimmer/             # LED dimmer circuit
+├── lesson_5/
+│   └── dimmer/             # LED dimmer circuit
+└── lesson_7/
+    └── metronome/          # Musical metronome with tempo and time signature control
 ```
 
 ## Getting Started
@@ -118,6 +120,10 @@ A remix of the basic blink sketch that outputs an SOS signal in Morse code.
 ### Lesson 5: Dimmer
 
 A basic LED dimmer implementation exploring PWM control.
+
+### Lesson 7: Metronome
+
+A musical metronome with adjustable tempo (30-300 BPM) and time signature control. Features button-based controls for increasing/decreasing tempo and changing time signatures, with audible pitch differentiation for downbeats.
 
 ## Learning Resources
 
