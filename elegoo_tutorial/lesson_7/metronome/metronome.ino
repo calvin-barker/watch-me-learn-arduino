@@ -15,26 +15,25 @@ int sigNumerator = 4;
 int beat         = 0;
 
 // Constants
-const int           SOUND_DURATION          = 50;          // ms
+const int           SOUND_DURATION          = 50;
 const unsigned long MINUTE_MS               = 60000UL;
 const int           MIN_BPM                 = 30;
 const int           MAX_BPM                 = 300;
-const unsigned long TEMPO_STEP_INTERVAL_MS  = 60;          // ms between tempo steps when holding A/B
-const unsigned long SIG_CHANGE_DEBOUNCE_MS  = 150;         // ms debounce for C/D
+const unsigned long TEMPO_STEP_INTERVAL_MS  = 60;
+const unsigned long SIG_CHANGE_DEBOUNCE_MS  = 150;
 
 // Derived timing
-unsigned long beatDelay = 0;   // ms between beats
+unsigned long beatDelay = 0;
 
-// Button state (for C/D edge detection)
+// Button state
 int prevCState = HIGH;
 int prevDState = HIGH;
 
-// Timing state
+// Timing
 unsigned long lastTickMs       = 0;
 unsigned long lastTempoStepMs  = 0;
 unsigned long lastSigChangeMs  = 0;
 
-// Helper function to set the beat delay.
 void setNewBPM(int b) {
   if (b < MIN_BPM) b = MIN_BPM;
   if (b > MAX_BPM) b = MAX_BPM;
@@ -50,6 +49,8 @@ void blink() {
 }
 
 void setup() {
+  Serial.begin(115200);  // logging
+
   setNewBPM(120);
 
   pinMode(SPEAKER,       OUTPUT);
@@ -63,6 +64,9 @@ void setup() {
   lastTickMs       = now;
   lastTempoStepMs  = now;
   lastSigChangeMs  = now;
+
+  Serial.print("Initial BPM: ");
+  Serial.println(bpm);
 }
 
 void loop() {
@@ -73,7 +77,7 @@ void loop() {
   int currentCState = digitalRead(BUTTON_C_PIN);
   int currentDState = digitalRead(BUTTON_D_PIN);
   
-  // TEMPO CONTROL (HOLD A = slower, HOLD B = faster)
+  // TEMPO CONTROL (HOLD A/B)
   if (now - lastTempoStepMs >= TEMPO_STEP_INTERVAL_MS) {
     bool tempoChanged = false;
 
@@ -89,40 +93,46 @@ void loop() {
 
     if (tempoChanged) {
       lastTempoStepMs = now;
+      Serial.print("BPM: ");
+      Serial.println(bpm);
     }
   }
  
-  // TIME SIGNATURE CONTROL (C/D one step per click, debounced)
+  // TIME SIGNATURE CONTROL
   if (now - lastSigChangeMs >= SIG_CHANGE_DEBOUNCE_MS) {
     if (prevCState == HIGH && currentCState == LOW && sigNumerator > 1) {
       sigNumerator -= 1;
-      beat          = 0;
+      beat = 0;
       lastSigChangeMs = now;
+      Serial.print("Time Signature: ");
+      Serial.print(sigNumerator);
+      Serial.println("/4");
     }
 
     if (prevDState == HIGH && currentDState == LOW && sigNumerator < 10) {
       sigNumerator += 1;
-      beat          = 0;
+      beat = 0;
       lastSigChangeMs = now;
+      Serial.print("Time Signature: ");
+      Serial.print(sigNumerator);
+      Serial.println("/4");
     }
   }
 
-  // Update previous states for edge detection
   prevCState = currentCState;
   prevDState = currentDState;
 
-  // METRONOME TICK SCHEDULER
+  // METRONOME TICK SCHEDULER  
   if (now - lastTickMs >= beatDelay) {
     lastTickMs += beatDelay;
     
     if (beat == 0) {
-      tone(SPEAKER, NOTE_C5, SOUND_DURATION);   // accented beat
+      tone(SPEAKER, NOTE_C5, SOUND_DURATION);
     } else {
       tone(SPEAKER, NOTE_C4, SOUND_DURATION);
     }
     blink();
 
-    // Advance beat within bar
     beat += 1;
     if (beat >= sigNumerator) {
       beat = 0;
