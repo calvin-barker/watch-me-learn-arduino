@@ -6,4 +6,5 @@ to light up the built-in board LED.
 I call it the proto-weeble-wobble.
 
 GIF of it in action:
+
 ![proto-weeble-wobble in action](./proto_weeble_wobble.gif)
